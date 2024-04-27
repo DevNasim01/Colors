@@ -9,13 +9,14 @@ const page = async () => {
   return (
     <>
       <div className="h-full w-full lg:flex grid place-items-center">
-        <div className="w-full flex flex-col items-center gap-[1vw] justify-center relative">
+        <div className="w-full h-full flex flex-col items-center gap-[1vw] justify-center relative">
           {user && (
-            <div className="w-full text-xl font-semibold capitalize grid place-content-start absolute top-5 left-[3vw]">
-              Hi' {user?.firstName}
-            </div>
+            <span className="text-xl font-semibold capitalize text-center grid place-content-start lg:absolute top-3 left-[3vw]">
+              Hi&#39; {user?.firstName}
+            </span>
           )}
-          <h1 className="text-4xl sm:text-7xl w-9/12 lg:w-1/2 lg:text-[5.4vw]/[5.4vw] font-extrabold tracking-tighter text-center">
+
+          <h1 className="text-4xl sm:text-7xl w-9/12 lg:w-1/2 lg:text-[5.2vw]/[5.5vw] font-extrabold tracking-tighter text-center">
             The super fast color palettes generator!
           </h1>
           <p className="text-base sm:text-xl lg:text-[1.3vw] w-2/3 font-medium text-center mt-5 mb-5 lg:mb-0">
@@ -40,7 +41,7 @@ const page = async () => {
           </Button>
         </div>
 
-        <div className="w-full h-full flex justify-center pt-5 lg:mt-0 lg:items-center">
+        <div className="w-full h-full flex justify-center items-start pt-5 md:pt-0 lg:items-center">
           <div className="w-[85%]">
           <svg
             version="1.1"
