@@ -35,7 +35,7 @@ const page = async () => {
               </Button>
             </SignInButton>
           )}
-          <Button variant="outline" className="border-2 duration-300 px-5 py-4 mt-2 ">
+          <Button variant="outline" className="border-2 duration-300 px-5 py-4 mt-2 lg:mt-0">
             Explore trending palettes
           </Button>
         </div>
