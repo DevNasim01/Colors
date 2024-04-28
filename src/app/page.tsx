@@ -7,7 +7,7 @@ import { motion, useAnimate } from "framer-motion";
 import { BLUR_BUTTON_VARIANT, FADE_DOWN_ANIMATION_VARIANTS } from "@/variant";
 import { useEffect } from "react";
 
-const page = () => {
+export default function Home() {
   const { user } = useUser();
   const [scope, animate] = useAnimate();
 
@@ -168,5 +168,3 @@ const page = () => {
     </>
   );
 };
-
-export default page;
