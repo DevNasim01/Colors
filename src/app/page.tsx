@@ -1,33 +1,95 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { SignInButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { currentUser } from "@clerk/nextjs/server";
+import { useUser } from "@clerk/nextjs";
+import { motion, useAnimate } from "framer-motion";
+import { BLUR_BUTTON_VARIANT, FADE_DOWN_ANIMATION_VARIANTS } from "@/variant";
+import { useEffect } from "react";
 
-const page = async () => {
-  const user = await currentUser();
+const page = () => {
+  const { user } = useUser();
+  const [scope, animate] = useAnimate();
+
+  const getRandomColor = () => {
+    // Generate a random hexadecimal color
+    return "#" + Math.floor(Math.random() * 16777215).toString(16);
+  };
+
+  const animateWithRandomColors = async (target: string) => {
+    while (true) {
+      const color = getRandomColor(); // Generate a random color
+      if (scope.current){
+        await animate(
+          target,
+          {
+            fill: color,
+          },
+          {
+            duration: 0.3,
+            delay: 0.4,
+          }
+        );
+      } else {
+        break;
+      }
+    }
+  };
+
+  useEffect(() => {
+    animateWithRandomColors(".first");
+    animateWithRandomColors(".second");
+    animateWithRandomColors(".third");
+    animateWithRandomColors(".fourth");
+    animateWithRandomColors(".fifth");
+  }, []);
 
   return (
     <>
       <div className="h-full w-full lg:flex grid place-items-center">
-        <div className="w-full h-full flex flex-col items-center gap-[1vw] justify-center relative">
+        <motion.div className="w-full h-full flex flex-col items-center gap-[1vw] justify-center relative"
+        initial="hidden"
+        animate="show"
+        viewport={{ once: true }}
+        variants={{
+          hidden: {},
+          show: {
+            transition: {
+              staggerChildren: 0.15,
+            },
+          },
+        }}
+        >
           {user && (
-            <span className="text-xl font-semibold capitalize text-center grid place-content-start lg:absolute top-3 left-[3vw]">
+            <span className="text-xl font-semibold capitalize text-center grid place-content-start items-center lg:absolute top-3 left-[3vw] font-mono">
               Hi&#39; {user?.firstName}
             </span>
           )}
 
-          <h1 className="text-4xl sm:text-7xl w-9/12 lg:w-1/2 lg:text-[5.2vw]/[5.5vw] font-extrabold tracking-tighter text-center">
+          <motion.h1
+          variants={FADE_DOWN_ANIMATION_VARIANTS}
+          className="text-4xl sm:text-7xl w-9/12 lg:w-1/2 lg:text-[5.2vw]/[5.5vw] font-extrabold tracking-tighter text-center"
+          >
             The super fast color palettes generator!
-          </h1>
-          <p className="text-base sm:text-xl lg:text-[1.3vw] w-2/3 font-medium text-center mt-5 mb-5 lg:mb-0">
+          </motion.h1>
+          <motion.p
+          variants={FADE_DOWN_ANIMATION_VARIANTS} 
+          className="text-base sm:text-xl lg:text-[1.3vw] w-2/3 font-medium text-center mt-5 mb-5 lg:mb-0">
             Create the prefect palette or get inspired by thousnands of
             beautiful color schemes.
-          </p>
+          </motion.p>
           {user ? (
             <Link href={"/user/colors"}>
+              <motion.span
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 1, delay: 0.5 }}
+              variants={BLUR_BUTTON_VARIANT}
+              >
               <Button className="duration-300 bg-blue-600 hover:bg-blue-700 px-5 py-4 ">
                 Generate your colors
               </Button>
+              </motion.span>
             </Link>
           ) : (
             <SignInButton>
@@ -36,13 +98,20 @@ const page = async () => {
               </Button>
             </SignInButton>
           )}
+          <motion.span 
+          initial="hidden"
+          animate="visible"
+          transition={{ duration: 1, delay: 0.8 }}
+          variants={BLUR_BUTTON_VARIANT}
+          >
           <Button variant="outline" className="border-2 duration-300 px-5 py-4 mt-2 lg:mt-0">
             Explore trending palettes
           </Button>
-        </div>
+          </motion.span>
+        </motion.div>
 
         <div className="w-full h-full flex justify-center items-start pt-5 md:pt-0 lg:items-center">
-          <div className="w-[85%]">
+          <div className="w-[85%]" ref={scope} >
           <svg
             version="1.1"
             id="homepage_hero_image-mobile"
