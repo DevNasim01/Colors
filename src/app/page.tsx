@@ -93,9 +93,16 @@ export default function Home() {
             </Link>
           ) : (
             <SignInButton>
+              <motion.span
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 1, delay: 0.5 }}
+              variants={BLUR_BUTTON_VARIANT}
+              >
               <Button className="duration-300 bg-blue-600 hover:bg-blue-700 px-5 py-4">
                 Signin to use generator!
               </Button>
+              </motion.span>
             </SignInButton>
           )}
           <motion.span 
