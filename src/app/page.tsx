@@ -79,7 +79,7 @@ export default function Home() {
             beautiful color schemes.
           </motion.p>
           {user ? (
-            <Link href={"/user/colors"}>
+            <Link href={"/user/redirect"}>
               <motion.span
               initial="hidden"
               animate="visible"
