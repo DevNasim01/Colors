@@ -15,7 +15,7 @@ const Page = ({params} : {
     <>
       <main className='w-full h-full grid grid-rows-5 md:flex'>
         {colors.map((color:string) => (
-          <div className='w-full h-full text-xl font-semibold flex justify-center items-center' style={{backgroundColor: `#${color}`}}>{`#${color}`}</div>
+          <div key={color} className='w-full h-full text-xl font-semibold flex justify-center items-center' style={{backgroundColor: `#${color}`}}>{`#${color}`}</div>
         ))}
       </main>
     </>

@@ -14,15 +14,14 @@ const Redirect = () => {
   })
 
   const routeParam = setRandomColor?.map((color: string) => color.slice(1)).join("-");
-
-  console.log(routeParam)
+  
   useEffect(() => {
     const timeout = setTimeout(() => {
       router.replace(`/user/colors/${encodeURI(routeParam)}`);
     }, 2500);
 
     return () => clearTimeout(timeout);
-  }, []); 
+  }, [routeParam]); 
 
   return <Loading />;
 };

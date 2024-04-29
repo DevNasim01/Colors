@@ -42,7 +42,7 @@ export default function Home() {
     animateWithRandomColors(".third");
     animateWithRandomColors(".fourth");
     animateWithRandomColors(".fifth");
-  }, []);
+  }, [animateWithRandomColors]);
 
   return (
     <>
