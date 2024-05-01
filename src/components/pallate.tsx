@@ -78,7 +78,6 @@ export default function Pallate({ color }: { color: string }) {
               <TooltipTrigger>
                 <h3>
                   {hex}
-                  {isDesktop ? "true" : "flase"}
                 </h3>
                 <p className="text-sm capitalize">{colorName}</p>
               </TooltipTrigger>
