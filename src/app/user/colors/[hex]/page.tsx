@@ -1,3 +1,4 @@
+import Pallate from '@/components/pallate';
 import React from 'react'
 
 const Page = ({params} : {
@@ -14,8 +15,8 @@ const Page = ({params} : {
   return (
     <>
       <main className='w-full h-full grid grid-rows-5 md:flex'>
-        {colors.map((color:string) => (
-          <div key={color} className='w-full h-full text-xl font-semibold flex justify-center items-center' style={{backgroundColor: `#${color}`}}>{`#${color}`}</div>
+        {colors.map((color:string , index: number) => (
+          <Pallate key={index} color={color} />
         ))}
       </main>
     </>

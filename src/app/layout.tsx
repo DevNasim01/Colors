@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import Header from "@/components/header";
 import Loading from "@/components/loading";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,13 +22,14 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <div className="h-dvh w-full flex flex-col">
+          <main className="h-dvh w-full flex flex-col overflow-hidden">
             <Header />
             <ClerkLoading>
               <Loading />
             </ClerkLoading>
             <ClerkLoaded>{children}</ClerkLoaded>
-          </div>
+          </main>
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
