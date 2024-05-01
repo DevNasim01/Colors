@@ -23,8 +23,6 @@ import {
 
 extend([namesPlugin]);
 export default function Pallate({ color }: { color: string }) {
-  const AvoveMedium = useMediaQuery("only screen and (min-width: 768pxpx)");
-
   const { toast } = useToast();
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
@@ -68,11 +66,11 @@ export default function Pallate({ color }: { color: string }) {
       initial={"start"}
       whileHover={"show"}
       variants={columVariant}
-      className={`relative w-full h-full text-xl font-semibold flex justify-between md:justify-center px-5 items-center md:items-end mb-10  `}
+      className={`relative w-full h-full text-xl font-semibold flex justify-between md:justify-center px-5 md:px-0 items-center md:items-end`}
       style={{ backgroundColor: `${hex}`, color: `${textColor}` }}
     >
       <div className="text-left md:text-center md:mb-10 text-2xl md:text-3xl font-semibold">
-        {AvoveMedium ? (
+        {isDesktop ? (
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -119,7 +117,6 @@ export default function Pallate({ color }: { color: string }) {
             <PopoverTrigger>
               <h3>
                 {hex}
-                {isDesktop ? "true" : "flase"}
               </h3>
               <p className="text-sm capitalize">{colorName}</p>
             </PopoverTrigger>

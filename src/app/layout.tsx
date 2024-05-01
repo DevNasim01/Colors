@@ -22,7 +22,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <main className="h-dvh w-full flex flex-col overflow-hidden">
+          <main className="h-dvh w-full flex flex-col">
             <Header />
             <ClerkLoading>
               <Loading />
