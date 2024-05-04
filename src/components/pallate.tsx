@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useToast } from "./ui/use-toast";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useMediaQuery } from "@react-hook/media-query";
 import {
@@ -20,12 +20,17 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import randomColor from "randomcolor";
+import { useRouter } from "next/navigation";
+import { Reorder } from "framer-motion"
 
 extend([namesPlugin]);
-export default function Pallate({ color }: { color: string }) {
+export default function Pallate({ color, parent }: { color: string, parent: React.RefObject<HTMLDivElement>; }) {
   const { toast } = useToast();
+  const router = useRouter();
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
+  const [draggable, setDraggable] = useState(false);
 
   const hex = `#${color}`;
   const getColorName = (hex: string) => {
@@ -60,9 +65,35 @@ export default function Pallate({ color }: { color: string }) {
     }, 2000);
   };
 
+  // generate new random color 
+  const handleKeyPress = (event:any) => {
+    if (event.code === 'Space') {
+      const newColor = randomColor({
+        hue: 'random',
+        luminosity: 'random',
+        count: 5, // Generate one random color
+      });
+      const routeParam = newColor?.map((color: string) => color.slice(1)).join("-");
+      router.replace(`/user/colors/${encodeURI(routeParam)}`);
+    }
+  };
+
+  useEffect(()=>{
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  })
+
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <motion.div
+    <Reorder.Item
+    key={color}
+          value={color}
+    dragListener={draggable}
+    onDragEnd={() => setDraggable(false)}
+    whileDrag={isDesktop? {scaleX: 1.2} : {scaleY: 1.2}}
+    dragConstraints={parent}
       initial={"start"}
       whileHover={"show"}
       variants={columVariant}
@@ -71,13 +102,14 @@ export default function Pallate({ color }: { color: string }) {
     >
       <div className="text-left md:text-center md:mb-10 text-2xl md:text-3xl font-semibold">
         {isDesktop ? (
-          <TooltipProvider>
+          <>
+            <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
                 <h3>
-                  {hex}
+                  {color}
                 </h3>
-                <p className="text-sm capitalize">{colorName}</p>
+                <p className="text-sm opacity-70 lowercase">{colorName}</p>
               </TooltipTrigger>
               <TooltipContent>
                 <div className="flex gap-2">
@@ -112,13 +144,14 @@ export default function Pallate({ color }: { color: string }) {
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
+          </>
         ) : (
           <Popover>
             <PopoverTrigger>
               <h3>
-                {hex}
+                {color}
               </h3>
-              <p className="text-sm capitalize">{colorName}</p>
+              <p className="text-sm lowercase opacity-70">{colorName}</p>
             </PopoverTrigger>
             <PopoverContent>
               <div className="flex flex-col gap-2">
@@ -157,12 +190,12 @@ export default function Pallate({ color }: { color: string }) {
 
       <div className="md:absolute md:h-full flex items-center">
         <motion.span className="hidden md:block" variants={columnChildVariant}>
-          <Options textColor={textColor} />
+          <Options textColor={textColor} currectColor={color} setDraggable={setDraggable} />
         </motion.span>
         <span className="md:hidden">
-          <Options textColor={textColor} />
+          <Options textColor={textColor} currectColor={color} setDraggable={setDraggable} />
         </span>
       </div>
-    </motion.div>
+    </Reorder.Item>
   );
 }
