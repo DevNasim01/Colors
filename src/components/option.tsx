@@ -64,7 +64,7 @@ export default function Options({
 
   return (
     <>
-      <div className="flex flex-col gap-3 md:gap-5">
+      <div className="flex flex-col gap-3.5 md:gap-5">
         {isDesktop ? (
           <TooltipProvider>
             {hex.split("-").length > 2 && (
@@ -113,15 +113,6 @@ export default function Options({
           </TooltipProvider>
         ) : (
           <>
-            <Popover>
-              <PopoverTrigger>
-                <CancelIcon currentColor={textColor} />
-              </PopoverTrigger>
-              <PopoverContent side="left" style={{ width: "20%" }}>
-                <span>Cut</span>
-              </PopoverContent>
-            </Popover>
-
             <Popover>
               <PopoverTrigger>
                 <CopyIcon currentColor={textColor} />

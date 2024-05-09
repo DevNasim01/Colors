@@ -20,14 +20,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import randomColor from "randomcolor";
-import { useRouter } from "next/navigation";
-import { Reorder } from "framer-motion"
+import { Reorder } from "framer-motion";
 
 extend([namesPlugin]);
-export default function Pallate({ color, parent }: { color: string, parent: React.RefObject<HTMLDivElement>; }) {
+export default function Pallate({
+  color,
+  parent,
+  runFunction
+}: {
+  color: string;
+  parent: React.RefObject<HTMLDivElement>;
+  runFunction: () => void;
+}) {
   const { toast } = useToast();
-  const router = useRouter();
+  
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
   const [draggable, setDraggable] = useState(false);
@@ -65,35 +71,30 @@ export default function Pallate({ color, parent }: { color: string, parent: Reac
     }, 2000);
   };
 
-  // generate new random color 
-  const handleKeyPress = (event:any) => {
-    if (event.code === 'Space') {
-      const newColor = randomColor({
-        hue: 'random',
-        luminosity: 'random',
-        count: 5, // Generate one random color
-      });
-      const routeParam = newColor?.map((color: string) => color.slice(1)).join("-");
-      router.replace(`/user/colors/${encodeURI(routeParam)}`);
+  // generate new random color
+  const handleKeyPress = (event: any) => {
+    if (event.code === "Space") {
+      // Run the function here
+      runFunction();
     }
   };
 
-  useEffect(()=>{
-    document.addEventListener('keydown', handleKeyPress);
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyPress);
     return () => {
-      document.removeEventListener('keydown', handleKeyPress);
+      document.removeEventListener("keydown", handleKeyPress);
     };
-  })
+  });
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
     <Reorder.Item
-    key={color}
-          value={color}
-    dragListener={draggable}
-    onDragEnd={() => setDraggable(false)}
-    whileDrag={isDesktop? {scaleX: 1.2} : {scaleY: 1.2}}
-    dragConstraints={parent}
+      key={color}
+      value={color}
+      dragListener={draggable}
+      onDragEnd={() => setDraggable(false)}
+      whileDrag={isDesktop ? { scaleX: 1.2 } : { scaleY: 1.2 }}
+      dragConstraints={parent}
       initial={"start"}
       whileHover={"show"}
       variants={columVariant}
@@ -104,54 +105,50 @@ export default function Pallate({ color, parent }: { color: string, parent: Reac
         {isDesktop ? (
           <>
             <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <h3>
-                  {color}
-                </h3>
-                <p className="text-sm opacity-70 lowercase">{colorName}</p>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="flex gap-2">
-                  <CopyToClipboard text={hex} onCopy={() => handleClick(0)}>
-                    <span
-                      className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
-                        clicks[0] ? "active" : ""
-                      }`}
-                    >
-                      {!clicks[0] ? hex : "✅"}
-                    </span>
-                  </CopyToClipboard>
-                  <CopyToClipboard text={rgb} onCopy={() => handleClick(1)}>
-                    <span
-                      className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
-                        clicks[1] ? "active" : ""
-                      }`}
-                    >
-                      {!clicks[1] ? rgb : "✅"}
-                    </span>
-                  </CopyToClipboard>
-                  <CopyToClipboard text={rgba} onCopy={() => handleClick(2)}>
-                    <span
-                      className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
-                        clicks[2] ? "active" : ""
-                      }`}
-                    >
-                      {!clicks[2] ? rgba : "✅"}
-                    </span>
-                  </CopyToClipboard>
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <h3>{color}</h3>
+                  <p className="text-sm opacity-70 lowercase">{colorName}</p>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="flex gap-2">
+                    <CopyToClipboard text={hex} onCopy={() => handleClick(0)}>
+                      <span
+                        className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
+                          clicks[0] ? "active" : ""
+                        }`}
+                      >
+                        {!clicks[0] ? hex : "✅"}
+                      </span>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={rgb} onCopy={() => handleClick(1)}>
+                      <span
+                        className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
+                          clicks[1] ? "active" : ""
+                        }`}
+                      >
+                        {!clicks[1] ? rgb : "✅"}
+                      </span>
+                    </CopyToClipboard>
+                    <CopyToClipboard text={rgba} onCopy={() => handleClick(2)}>
+                      <span
+                        className={`bg-slate-200 text-sm rounded-md px-2 py-2 shadow-inner cursor-pointer ${
+                          clicks[2] ? "active" : ""
+                        }`}
+                      >
+                        {!clicks[2] ? rgba : "✅"}
+                      </span>
+                    </CopyToClipboard>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </>
         ) : (
           <Popover>
             <PopoverTrigger>
-              <h3>
-                {color}
-              </h3>
-              <p className="text-sm lowercase opacity-70">{colorName}</p>
+              <h3>{color}</h3>
+              <p className="text-sm lowercase opacity-70 text-left font-mono font-thin">{colorName}</p>
             </PopoverTrigger>
             <PopoverContent>
               <div className="flex flex-col gap-2">
@@ -190,10 +187,18 @@ export default function Pallate({ color, parent }: { color: string, parent: Reac
 
       <div className="md:absolute md:h-full flex items-center">
         <motion.span className="hidden md:block" variants={columnChildVariant}>
-          <Options textColor={textColor} currectColor={color} setDraggable={setDraggable} />
+          <Options
+            textColor={textColor}
+            currectColor={color}
+            setDraggable={setDraggable}
+          />
         </motion.span>
         <span className="md:hidden">
-          <Options textColor={textColor} currectColor={color} setDraggable={setDraggable} />
+          <Options
+            textColor={textColor}
+            currectColor={color}
+            setDraggable={setDraggable}
+          />
         </span>
       </div>
     </Reorder.Item>

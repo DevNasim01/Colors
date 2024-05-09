@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const Header = () => {
   return (
-    <nav className="w-full px-5 md:px-[3vw] py-4 md:py-[1.4vw] text-base md:text-xl border-b-2 shadow-sm tracking-wider flex items-center">
+    <nav className="w-full px-5 md:px-10 py-4 md:py-5 text-2xl md:text-4xl border-b-2 shadow-sm tracking-wider flex items-center">
       <Link href="/" className=" text-2xl lg:text-[2.3vw] font-extrabold capitalize">
         colors
       </Link>

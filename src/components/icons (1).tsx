@@ -74,7 +74,7 @@ const DragIcon = ({ currentColor }: IconType) => (
     strokeWidth="0"
     viewBox="0 0 16 16"
     height="1.5rem"
-    className="cursor-grab"
+    className="cursor-grab rotate-90 md:rotate-0"
     width="1.5rem"
     xmlns="http://www.w3.org/2000/svg"
   >
