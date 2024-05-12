@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { motion, useAnimate } from "framer-motion";
 import { BLUR_BUTTON_VARIANT, FADE_DOWN_ANIMATION_VARIANTS } from "@/variant";
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Home() {
   const { user } = useUser();
@@ -43,6 +44,14 @@ export default function Home() {
     animateWithRandomColors(".fourth");
     animateWithRandomColors(".fifth");
   }, [animateWithRandomColors]);
+ 
+
+  useEffect(() => {
+    // Clear lockColor from localStorage when the component unmounts
+    return () => {
+        localStorage.removeItem("lockColor");
+    };
+  }, []);
 
   return (
     <>

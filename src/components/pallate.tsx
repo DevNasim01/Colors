@@ -26,17 +26,20 @@ extend([namesPlugin]);
 export default function Pallate({
   color,
   parent,
-  runFunction
+  runFunction,
+  handelLockColor
 }: {
   color: string;
   parent: React.RefObject<HTMLDivElement>;
   runFunction: () => void;
+  handelLockColor:(colors: string[]) => void;
 }) {
   const { toast } = useToast();
   
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
   const [draggable, setDraggable] = useState(false);
+  const [lock, setLock] = useState(false);
 
   const hex = `#${color}`;
   const getColorName = (hex: string) => {
@@ -86,6 +89,16 @@ export default function Pallate({
     };
   });
 
+
+  // Function to update lock state
+  const updateLock = (value:any) => {
+    setLock(value);
+
+    if(lock){
+      handelLockColor([`#${color}`])
+    }
+  };
+
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
     <Reorder.Item
@@ -93,7 +106,6 @@ export default function Pallate({
       value={color}
       dragListener={draggable}
       onDragEnd={() => setDraggable(false)}
-      whileDrag={isDesktop ? { scaleX: 1.2 } : { scaleY: 1.2 }}
       dragConstraints={parent}
       initial={"start"}
       whileHover={"show"}
@@ -191,6 +203,8 @@ export default function Pallate({
             textColor={textColor}
             currectColor={color}
             setDraggable={setDraggable}
+            lock={lock}
+            updateLock={updateLock}
           />
         </motion.span>
         <span className="md:hidden">
@@ -198,6 +212,8 @@ export default function Pallate({
             textColor={textColor}
             currectColor={color}
             setDraggable={setDraggable}
+            lock={lock}
+            updateLock={updateLock}
           />
         </span>
       </div>

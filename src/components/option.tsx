@@ -21,20 +21,30 @@ import {
 import { useMediaQuery } from "@react-hook/media-query";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import { color } from "framer-motion";
 import { toast } from "./ui/use-toast";
+import { useState } from "react";
 export default function Options({
   textColor,
   currectColor,
   setDraggable,
+  lock,
+  updateLock,
 }: {
   textColor: string;
   currectColor: string;
   setDraggable: (value: boolean) => void;
+  lock: boolean;
+  updateLock: (value: boolean) => void;
 }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const router = useRouter();
   const { hex } = useParams<{ hex: string }>();
+
+  // lock a color
+  const toggleLock = () => {
+    // Toggle lock state
+    updateLock(!lock);
+  };
 
   // console.log(currectColor)
 
@@ -103,7 +113,7 @@ export default function Options({
             </div>
 
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger onClick={toggleLock}>
                 <LockIcon currentColor={textColor} />
               </TooltipTrigger>
               <TooltipContent side="right">
