@@ -27,19 +27,33 @@ export default function Pallate({
   color,
   parent,
   runFunction,
-  handelLockColor
+  lockColor,
+  setLockColor
 }: {
   color: string;
   parent: React.RefObject<HTMLDivElement>;
   runFunction: () => void;
-  handelLockColor:(colors: string[]) => void;
+  lockColor: string[];
+  setLockColor: (value: string[]) => void
 }) {
   const { toast } = useToast();
   
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
   const [draggable, setDraggable] = useState(false);
-  const [lock, setLock] = useState(false);
+
+  // handelLockhex
+  const handleToggleHex = (hex: string) => {
+    if (lockColor.includes(hex)) {
+      // If the hex is already locked, unlock it
+      setLockColor(lockColor.filter((h) => h !== hex));
+    } else {
+      // Otherwise, lock it
+      setLockColor([...lockColor, hex]);
+    }
+  };
+
+  localStorage.setItem("lockColor", JSON.stringify(lockColor));
 
   const hex = `#${color}`;
   const getColorName = (hex: string) => {
@@ -88,16 +102,6 @@ export default function Pallate({
       document.removeEventListener("keydown", handleKeyPress);
     };
   });
-
-
-  // Function to update lock state
-  const updateLock = (value:any) => {
-    setLock(value);
-
-    if(lock){
-      handelLockColor([`#${color}`])
-    }
-  };
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
@@ -203,8 +207,8 @@ export default function Pallate({
             textColor={textColor}
             currectColor={color}
             setDraggable={setDraggable}
-            lock={lock}
-            updateLock={updateLock}
+            toogleHex={handleToggleHex}
+            lockedHexes={lockColor}
           />
         </motion.span>
         <span className="md:hidden">
@@ -212,8 +216,8 @@ export default function Pallate({
             textColor={textColor}
             currectColor={color}
             setDraggable={setDraggable}
-            lock={lock}
-            updateLock={updateLock}
+            toogleHex={handleToggleHex}
+            lockedHexes={lockColor}
           />
         </span>
       </div>

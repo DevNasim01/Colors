@@ -27,26 +27,20 @@ export default function Options({
   textColor,
   currectColor,
   setDraggable,
-  lock,
-  updateLock,
+  toogleHex,
+  lockedHexes,
 }: {
   textColor: string;
   currectColor: string;
   setDraggable: (value: boolean) => void;
-  lock: boolean;
-  updateLock: (value: boolean) => void;
+  toogleHex: (color: string) => void;
+  lockedHexes: string[];
 }) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const router = useRouter();
   const { hex } = useParams<{ hex: string }>();
+  const [lock, setLock] = useState(false);
 
-  // lock a color
-  const toggleLock = () => {
-    // Toggle lock state
-    updateLock(!lock);
-  };
-
-  // console.log(currectColor)
 
   // remove color
   const removeColor = (selectedColor: string) => {
@@ -60,7 +54,7 @@ export default function Options({
     }
     const newHex = updatedColors.join("-");
     router.replace(`/user/colors/${encodeURI(newHex)}`);
-    console.log(newHex);
+    // console.log(newHex);
   };
 
   // copy color
@@ -71,6 +65,8 @@ export default function Options({
     });
     navigator.clipboard.writeText("#" + color);
   };
+
+
 
   return (
     <>
@@ -113,8 +109,12 @@ export default function Options({
             </div>
 
             <Tooltip>
-              <TooltipTrigger onClick={toggleLock}>
-                <LockIcon currentColor={textColor} />
+              <TooltipTrigger onClick={() => toogleHex(currectColor)}>
+              {lockedHexes?.includes(currectColor) ? (
+                  <LockIcon currentColor={textColor} />
+                ) : (
+                  <OpenIcon currentColor={textColor} />
+                )}
               </TooltipTrigger>
               <TooltipContent side="right">
                 <p>Lock</p>
@@ -124,14 +124,18 @@ export default function Options({
         ) : (
           <>
             <Popover>
-              <PopoverTrigger>
+              <PopoverTrigger onClick={() => copyColor(currectColor)}>
                 <CopyIcon currentColor={textColor} />
               </PopoverTrigger>
               <PopoverContent side="left">
-                <span onClick={() => console.log("clickedddd")}>Copy</span>
+                <span>Copy</span>
               </PopoverContent>
             </Popover>
 
+            <div 
+            onMouseEnter={() => setDraggable(true)}
+            onMouseLeave={() => setDraggable(false)} // retain this for better animation
+            onTouchStart={() => setDraggable(true)} >
             <Popover>
               <PopoverTrigger>
                 <DragIcon currentColor={textColor} />
@@ -140,10 +144,15 @@ export default function Options({
                 <span>Drag</span>
               </PopoverContent>
             </Popover>
+            </div>
 
             <Popover>
-              <PopoverTrigger>
-                <LockIcon currentColor={textColor} />
+              <PopoverTrigger onClick={() => toogleHex(currectColor)}>
+              {lockedHexes?.includes(currectColor) ? (
+                  <LockIcon currentColor={textColor} />
+                ) : (
+                  <OpenIcon currentColor={textColor} />
+                )}
               </PopoverTrigger>
               <PopoverContent side="left">
                 <span>Lock</span>

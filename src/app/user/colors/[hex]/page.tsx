@@ -23,36 +23,38 @@ const Page = ({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [lockColor, setLockColor] = useState<string[]>([]);
 
-  useEffect(() => {
-    // Load lockColor from localStorage on component mount
-    const storedLockColor = localStorage.getItem("lockColor");
-    if (storedLockColor) {
-      setLockColor(JSON.parse(storedLockColor));
-    }
-  }, []);
+  // useEffect(() => {
+  //   // Load lockColor from localStorage on component mount
+  //   const storedLockColor = localStorage.getItem("lockColor");
+  //   if (storedLockColor) {
+  //     setLockColor(JSON.parse(storedLockColor));
+  //   }
+  // }, []);
 
-  const handelLockColor = (newColors: string[]) => {
-    // Merge the new colors with the existing lockColor array
-    const updatedColors = [...lockColor, ...newColors];
-    setLockColor(updatedColors);
-    // Save updated lockColor to localStorage
-    localStorage.setItem("lockColor", JSON.stringify(updatedColors));
-  };
+  // console.log(lockColor)
+
 
   // console.log(colorPalettes);
   const runFunction = () => {
-    const maxCount = 5;
-    const newColorCount = Math.max(0, maxCount - lockColor.length);
-    const newColor = randomColor({
-      hue: "random",
-      luminosity: "random",
-      count: newColorCount, // Generate one random color
-    });
-    const routeParam = [...lockColor, ...newColor]
-      ?.map((color: string) => color.slice(1))
-      .join("-");
+    const randomColors = Array.from({ length: 5 }, () =>
+      randomColor({
+        hue: "random",
+        luminosity: "random",
+      })
+    );
+
+    const allColors = [...lockColor, ...randomColors];
+
+    // console.log(allColors, "all colors");
+
+    if (allColors.length >= 5) {
+      const routeParam = allColors
+        .slice(0, 5)
+        .map((color) => color.replace("#", ""))
+        .join("-");
     router.replace(`/user/colors/${encodeURI(routeParam)}`);
   };
+}
 
   return (
     <main className={`w-full h-full relative ${!isDesktop && "min-h-full"}`}>
@@ -70,7 +72,8 @@ const Page = ({
             color={color}
             parent={parent}
             runFunction={runFunction}
-            handelLockColor={handelLockColor}
+            lockColor={lockColor}
+            setLockColor={setLockColor}
           />
         ))}
       </Reorder.Group>
