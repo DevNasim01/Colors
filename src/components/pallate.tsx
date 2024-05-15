@@ -53,7 +53,6 @@ export default function Pallate({
     }
   };
 
-  localStorage.setItem("lockColor", JSON.stringify(lockColor));
 
   const hex = `#${color}`;
   const getColorName = (hex: string) => {
@@ -93,6 +92,7 @@ export default function Pallate({
     if (event.code === "Space") {
       // Run the function here
       runFunction();
+      
     }
   };
 

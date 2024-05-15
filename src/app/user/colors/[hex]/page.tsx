@@ -21,7 +21,21 @@ const Page = ({
   const router = useRouter();
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [lockColor, setLockColor] = useState<string[]>([]);
+  const [lockColor, setLockColor] = useState<string[]>(() => {
+    const storedLockColor = localStorage.getItem("lockColor");
+    return storedLockColor ? JSON.parse(storedLockColor) : [];
+  });
+  
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      localStorage.setItem('lockColor', JSON.stringify(lockColor));
+    }, 150); // Adjust the debounce time as needed
+  
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [lockColor]);
+  
 
   // useEffect(() => {
   //   // Load lockColor from localStorage on component mount
@@ -45,7 +59,7 @@ const Page = ({
 
     const allColors = [...lockColor, ...randomColors];
 
-    // console.log(allColors, "all colors");
+    console.log(allColors, "all colors");
 
     if (allColors.length >= 5) {
       const routeParam = allColors
