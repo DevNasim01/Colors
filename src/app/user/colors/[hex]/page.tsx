@@ -29,7 +29,7 @@ const Page = ({
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       localStorage.setItem('lockColor', JSON.stringify(lockColor));
-    }, 150); // Adjust the debounce time as needed
+    }, 200); // Adjust the debounce time as needed
   
     return () => {
       clearTimeout(timeoutId);
@@ -59,7 +59,7 @@ const Page = ({
 
     const allColors = [...lockColor, ...randomColors];
 
-    console.log(allColors, "all colors");
+    // console.log(allColors, "all colors");
 
     if (allColors.length >= 5) {
       const routeParam = allColors
@@ -67,6 +67,8 @@ const Page = ({
         .map((color) => color.replace("#", ""))
         .join("-");
     router.replace(`/user/colors/${encodeURI(routeParam)}`);
+
+    return allColors;
   };
 }
 

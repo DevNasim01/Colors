@@ -108,7 +108,7 @@ export default function Pallate({
     <Reorder.Item
       key={color}
       value={color}
-      dragListener={isDesktop ? draggable : undefined}
+      dragListener={draggable}
       onDragEnd={() => setDraggable(false)}
       dragConstraints={parent}
       initial={"start"}
