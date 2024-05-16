@@ -39,7 +39,6 @@ export default function Options({
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const router = useRouter();
   const { hex } = useParams<{ hex: string }>();
-  const [lock, setLock] = useState(false);
 
 
   // remove color
@@ -123,6 +122,17 @@ export default function Options({
           </TooltipProvider>
         ) : (
           <>
+            {hex.split("-").length > 2 && (
+              <Popover>
+                <PopoverTrigger onClick={() => removeColor(currectColor)}>
+                  <CancelIcon currentColor={textColor} />
+                </PopoverTrigger>
+                <PopoverContent side="right">
+                  <p>Cut</p>
+                </PopoverContent>
+              </Popover>
+            )}
+
             <Popover>
               <PopoverTrigger onClick={() => copyColor(currectColor)}>
                 <CopyIcon currentColor={textColor} />
@@ -131,20 +141,6 @@ export default function Options({
                 <span>Copy</span>
               </PopoverContent>
             </Popover>
-
-            <div 
-            onMouseEnter={() => setDraggable(true)}
-            onMouseLeave={() => setDraggable(false)} // retain this for better animation
-            onTouchStart={() => setDraggable(true)} >
-            <Popover>
-              <PopoverTrigger>
-                <DragIcon currentColor={textColor} />
-              </PopoverTrigger>
-              <PopoverContent side="left">
-                <span>Drag</span>
-              </PopoverContent>
-            </Popover>
-            </div>
 
             <Popover>
               <PopoverTrigger onClick={() => toogleHex(currectColor)}>

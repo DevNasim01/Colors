@@ -108,7 +108,7 @@ export default function Pallate({
     <Reorder.Item
       key={color}
       value={color}
-      dragListener={draggable}
+      dragListener={isDesktop ? draggable : undefined}
       onDragEnd={() => setDraggable(false)}
       dragConstraints={parent}
       initial={"start"}
@@ -124,7 +124,7 @@ export default function Pallate({
               <Tooltip>
                 <TooltipTrigger>
                   <h3>{color}</h3>
-                  <p className="text-sm opacity-70 lowercase">{colorName}</p>
+                  <p className="text-xs font-light opacity-70 lowercase">~{colorName}</p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="flex gap-2">

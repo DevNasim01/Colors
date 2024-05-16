@@ -74,7 +74,7 @@ const Page = ({
     <main className={`w-full h-full relative ${!isDesktop && "min-h-full"}`}>
       <NavBar runFunction={runFunction} />
       <Reorder.Group
-        className="w-full h-full grid grid-rows-5 md:flex"
+        className="w-full h-dvh md:h-full flex flex-col md:flex-row"
         axis={isDesktop ? "x" : "y"}
         values={colorPalettes}
         onReorder={setColorPalattes}

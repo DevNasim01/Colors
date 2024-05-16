@@ -14,7 +14,7 @@ const CancelIcon = ({ currentColor }: IconType) => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="cursor-pointer hidden lg:block "
+    className="cursor-pointer"
   >
     <path d="M18 6 6 18" />
     <path d="m6 6 12 12" />

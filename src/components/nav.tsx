@@ -1,5 +1,14 @@
 import { Button } from "./ui/button";
 import Image from "next/image";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const NavBar = ({ runFunction }: { runFunction: () => void }) => {
   return (
@@ -13,9 +22,21 @@ const NavBar = ({ runFunction }: { runFunction: () => void }) => {
         </Button>
 
         <div className="md:flex hidden items-center gap-6">
+        <Dialog>
+        <DialogTrigger>
           <Button variant="ghost" className="flex justify-center items-center px-7">
-            <Image src="/eye-open.svg" alt="open" width={50} height={50} />
+            <Image src="/eye-open.svg" alt="open" width={90} height={90} />
           </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Quick View</DialogTitle>
+          </DialogHeader>
+                Under process... <br />
+                Features will be available to you soon...
+        </DialogContent>
+      </Dialog>
+        
 
           <Button variant="ghost" className="flex justify-center items-center px-7">
             <Image src="/heart.svg" alt="heart" width={50} height={50} />
