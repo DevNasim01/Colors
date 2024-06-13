@@ -20,27 +20,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Reorder } from "framer-motion";
 
 extend([namesPlugin]);
 export default function Pallate({
   color,
-  parent,
   runFunction,
   lockColor,
-  setLockColor
+  setLockColor,
+  setDraggable,
 }: {
   color: string;
-  parent: React.RefObject<HTMLDivElement>;
   runFunction: () => void;
   lockColor: string[];
-  setLockColor: (value: string[]) => void
+  setLockColor: (value: string[]) => void;
+  setDraggable: (value: boolean) => void;
 }) {
   const { toast } = useToast();
-  
+
   const [clicks, setClicks] = useState([false, false, false]);
   const timeoutId = useRef<NodeJS.Timeout | null>(null);
-  const [draggable, setDraggable] = useState(false);
 
   // handelLockhex
   const handleToggleHex = (hex: string) => {
@@ -52,7 +50,6 @@ export default function Pallate({
       setLockColor([...lockColor, hex]);
     }
   };
-
 
   const hex = `#${color}`;
   const getColorName = (hex: string) => {
@@ -92,7 +89,6 @@ export default function Pallate({
     if (event.code === "Space") {
       // Run the function here
       runFunction();
-      
     }
   };
 
@@ -105,16 +101,11 @@ export default function Pallate({
 
   const isDesktop = useMediaQuery("(min-width: 768px)");
   return (
-    <Reorder.Item
-      key={color}
-      value={color}
-      dragListener={draggable}
-      onDragEnd={() => setDraggable(false)}
-      dragConstraints={parent}
+    <motion.div
       initial={"start"}
       whileHover={"show"}
       variants={columVariant}
-      className={`relative w-full h-full text-xl font-semibold flex justify-between md:justify-center px-5 md:px-0 items-center md:items-end`}
+      className={`relative w-full h-44 md:h-full text-xl font-semibold flex justify-between md:justify-center px-5 md:px-0 items-center md:items-end`}
       style={{ backgroundColor: `${hex}`, color: `${textColor}` }}
     >
       <div className="text-left md:text-center md:mb-10 text-2xl md:text-3xl font-semibold">
@@ -124,7 +115,9 @@ export default function Pallate({
               <Tooltip>
                 <TooltipTrigger>
                   <h3>{color}</h3>
-                  <p className="text-xs font-light opacity-70 lowercase">~{colorName}</p>
+                  <p className="text-xs font-light opacity-70 lowercase">
+                    ~{colorName}
+                  </p>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="flex gap-2">
@@ -164,7 +157,9 @@ export default function Pallate({
           <Popover>
             <PopoverTrigger>
               <h3>{color}</h3>
-              <p className="text-sm lowercase opacity-70 text-left font-mono font-thin">{colorName}</p>
+              <p className="text-sm lowercase opacity-70 text-left font-mono font-thin">
+                {colorName}
+              </p>
             </PopoverTrigger>
             <PopoverContent>
               <div className="flex flex-col gap-2">
@@ -221,6 +216,6 @@ export default function Pallate({
           />
         </span>
       </div>
-    </Reorder.Item>
+    </motion.div>
   );
 }

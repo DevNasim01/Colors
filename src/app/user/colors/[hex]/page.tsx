@@ -17,6 +17,7 @@ const Page = ({
   const hex = params.hex;
   const colors: undefined | string[] | any = hex && hex.split("-");
   const [colorPalettes, setColorPalattes] = useState(colors);
+  const [draggable, setDraggable] = useState<boolean>(false);
   const parent = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -25,30 +26,17 @@ const Page = ({
     const storedLockColor = localStorage.getItem("lockColor");
     return storedLockColor ? JSON.parse(storedLockColor) : [];
   });
-  
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      localStorage.setItem('lockColor', JSON.stringify(lockColor));
+      localStorage.setItem("lockColor", JSON.stringify(lockColor));
     }, 200); // Adjust the debounce time as needed
-  
+
     return () => {
       clearTimeout(timeoutId);
     };
   }, [lockColor]);
-  
 
-  // useEffect(() => {
-  //   // Load lockColor from localStorage on component mount
-  //   const storedLockColor = localStorage.getItem("lockColor");
-  //   if (storedLockColor) {
-  //     setLockColor(JSON.parse(storedLockColor));
-  //   }
-  // }, []);
-
-  // console.log(lockColor)
-
-
-  // console.log(colorPalettes);
   const runFunction = () => {
     const randomColors = Array.from({ length: 5 }, () =>
       randomColor({
@@ -66,11 +54,11 @@ const Page = ({
         .slice(0, 5)
         .map((color) => color.replace("#", ""))
         .join("-");
-    router.replace(`/user/colors/${encodeURI(routeParam)}`);
+      router.replace(`/user/colors/${encodeURI(routeParam)}`);
 
-    return allColors;
+      return allColors;
+    }
   };
-}
 
   return (
     <main className={`w-full h-full relative ${!isDesktop && "min-h-full"}`}>
@@ -83,14 +71,21 @@ const Page = ({
         ref={parent}
       >
         {colorPalettes.map((color: string, index: number) => (
-          <Pallate
-            key={index}
-            color={color}
-            parent={parent}
-            runFunction={runFunction}
-            lockColor={lockColor}
-            setLockColor={setLockColor}
-          />
+          <Reorder.Item
+            key={color}
+            value={color}
+            dragListener={draggable}
+            onDragEnd={() => setDraggable(false)}
+            className="w-full h-full"
+          >
+            <Pallate
+              color={color}
+              runFunction={runFunction}
+              lockColor={lockColor}
+              setLockColor={setLockColor}
+              setDraggable={setDraggable}
+            />
+          </Reorder.Item>
         ))}
       </Reorder.Group>
     </main>

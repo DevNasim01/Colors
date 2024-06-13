@@ -94,7 +94,6 @@ export default function Options({
 
             <div
               onMouseEnter={() => setDraggable(true)}
-              onMouseLeave={() => setDraggable(false)} // retain this for better animation
               onTouchStart={() => setDraggable(true)}
             >
               <Tooltip>
@@ -122,17 +121,6 @@ export default function Options({
           </TooltipProvider>
         ) : (
           <>
-            {hex.split("-").length > 2 && (
-              <Popover>
-                <PopoverTrigger onClick={() => removeColor(currectColor)}>
-                  <CancelIcon currentColor={textColor} />
-                </PopoverTrigger>
-                <PopoverContent side="right">
-                  <p>Cut</p>
-                </PopoverContent>
-              </Popover>
-            )}
-
             <Popover>
               <PopoverTrigger onClick={() => copyColor(currectColor)}>
                 <CopyIcon currentColor={textColor} />
@@ -141,6 +129,20 @@ export default function Options({
                 <span>Copy</span>
               </PopoverContent>
             </Popover>
+
+            <div
+              onMouseEnter={() => setDraggable(true)}
+              onTouchStart={() => setDraggable(true)}
+            >
+              <Popover>
+                <PopoverTrigger>
+                  <DragIcon currentColor={textColor} />
+                </PopoverTrigger>
+                <PopoverContent side="right">
+                  <p>Drag</p>
+                </PopoverContent>
+              </Popover>
+            </div>
 
             <Popover>
               <PopoverTrigger onClick={() => toogleHex(currectColor)}>
