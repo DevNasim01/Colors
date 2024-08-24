@@ -22,7 +22,6 @@ import { useMediaQuery } from "@react-hook/media-query";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { toast } from "./ui/use-toast";
-import { useState } from "react";
 export default function Options({
   textColor,
   currectColor,
