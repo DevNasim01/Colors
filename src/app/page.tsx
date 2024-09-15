@@ -6,7 +6,6 @@ import { useUser } from "@clerk/nextjs";
 import { motion, useAnimate } from "framer-motion";
 import { BLUR_BUTTON_VARIANT, FADE_DOWN_ANIMATION_VARIANTS } from "@/variant";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 export default function Home() {
   const { user } = useUser();
@@ -180,6 +179,13 @@ export default function Home() {
           </svg>
           </div>
         </div>
+
+        <div className="fixed right-0 bottom-0 m-5 opacity-70 cursor-pointer hover:opacity-100 z-10 transition-opacity duration-300 flex gap-2 items-center font-2 lg:text-[1.2vw] text-[2.8vw]">
+            <Link href={"https://devnasim-sk-nasims-projects.vercel.app/"} target="_blank" className="border-r px-2 flex gap-2 items-center">
+              <sup className="lg:text-[1.4vw] text-[2.8vw]">&copy;</sup> devNasim 2024
+            </Link>
+            All rights reserved.
+          </div>
       </div>
     </>
   );
