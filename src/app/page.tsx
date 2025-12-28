@@ -51,7 +51,7 @@ export default function Home() {
         localStorage.removeItem("lockColor");
     };
   }, []);
-
+const currentYear = new Date().getFullYear();
   return (
     <>
       <div className="h-full w-full lg:flex grid place-items-center">
@@ -82,7 +82,7 @@ export default function Home() {
           </motion.h1>
           <motion.p
           variants={FADE_DOWN_ANIMATION_VARIANTS} 
-          className="text-base sm:text-xl lg:text-[1.3vw] w-2/3 font-medium text-center mt-5 mb-5 lg:mb-0">
+          className="text-base sm:text-xl lg:text-[1.3vw] w-2/3 font-medium text-center mt-5 mb-5 lg:mb-0 Poppins">
             Create the prefect palette or get inspired by thousnands of
             beautiful color schemes.
           </motion.p>
@@ -180,11 +180,11 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="fixed right-0 bottom-0 m-5 opacity-70 cursor-pointer hover:opacity-100 z-10 transition-opacity duration-300 flex gap-2 items-center font-2 lg:text-[1.2vw] text-[2.8vw]">
-            <Link href={"https://devnasim-sk-nasims-projects.vercel.app/"} target="_blank" className="border-r px-2 flex gap-2 items-center">
-              <sup className="lg:text-[1.4vw] text-[2.8vw]">&copy;</sup> devNasim 2024
+        <div className="fixed right-0 bottom-0 m-5 opacity-70 cursor-pointer hover:opacity-100 z-10 transition-opacity duration-300 flex gap-2 items-center font-2 lg:text-[1vw] text-[2.5vw] Poppins">
+            <Link href={"https://dev-nasim.vercel.app"} target="_blank" className="border-r-2 border-black px-2 flex gap-0.5 items-center">
+              <span className="lg:text-[1.4vw] text-[2.8vw]">&copy;</span>devnasim {currentYear}
             </Link>
-            All rights reserved.
+            all rights reserved.
           </div>
       </div>
     </>
